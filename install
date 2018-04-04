@@ -7,17 +7,24 @@ if [ ! -d ~/.quickpod ]; then
 mkdir ~/.quickpod
 fi
 
+echo "Install quickpod"
 if [ -f "~/.quickpod/quickpod" ]; then 
   rm "$~/.quickpod/quickpod"
 fi 
 
 cp ./quickpod ~/.quickpod/quickpod
 
-if alias quickpod 2>/dev/null; then 
-  echo "Add a alias"
-  echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.zshrc
-  source ~/.zshrc
-fi
+echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.bash_profile
+source ~/.bash_profile
+
+echo "Success Installed quickpod"
+
+# Todo check 
+# if alias quickpod 2>/dev/null; then 
+#   echo "installed"
+# else
+#   echo "Add a alias"
+# fi
 
 
 
