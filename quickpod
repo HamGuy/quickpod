@@ -1,108 +1,61 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env ruby
 
-import click
-import requests
-import os
-import math
-import sys
-import subprocess
-import fcntl
+require 'rubygems'
+require 'commander/import'
+require 'fileutils'
+require 'cocoapods'
 
+program :name, 'quickpod'
+program :version, '0.0.1'
+program :description, 'release pod quickly'
 
-def download_file(url, local_filename):
-    """
-    Downlod file to specific path
-    """
-    r = requests.get(url, stream=True)
-    total_size = int(r.headers['Content-Length'])
-    with click.progressbar(r.iter_content(1024), length=total_size, label="Downloading:") as bar, open(local_filename, 'wb') as f:
-        for chunk in bar:
-            if chunk:
-                f.write(chunk)
-                bar.update(len(chunk))
-    if os.path.isfile(local_filename):
-        click.echo('Success downloading')
-        return True
-    return False
+def execute(command, options = {})
+    options = { :optional => false }.merge options
+    abort unless (system(command) || options[:optional])
+end
 
+command :init do |c|
+  c.syntax = 'quickpod init [options]'
+  c.summary = ''
+  c.description = '初始化fastlane环境'
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Hamguy::Commands::Init
+    dirname = File.join(Dir.pwd,'fastlane')
+    FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-def non_block_read(output):
-    fd = output.fileno()
-    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
-    try:
-        return output.read()
-    except EOFError:
-        raise EOFError
-    except Exception, e:
-        pass
+    filename = File.join(dirname, 'Fastfile')
+    puts filename
+    FileUtils.rm(filename) unless !File.exist?(filename)
 
+    tmppath = "/tmp/relesepod_fastlane_templete"
+    execute "git clone git@gitlab.dxy.net:aspirin/relesepod_fastlane_templete.git #{tmppath}"
+    execute "cp #{tmppath}/Fastfile #{filename}"
+    execute "rm -rf #{tmppath}"
+  end
+end
 
-def excute_command(command):
-    try:
-        p = subprocess.Popen(
-            command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-        while True:
-            data = non_block_read(p.stdout)
-            print data
-            if p.poll() is not None:
-                break
-    except Exception, e:
-        print e
+command :update do |c|
+  c.syntax = 'quickpod update [options]'
+  c.summary = ''
+  c.description = 'Update pod to target version'
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called quickpod::Commands::Update
+    version = args[0]
+    message = args[1]
+    puts "target-version #{version}"
+    puts "commit-message #{message}"
+        
+    if message
+      execute "fastlane release_pod version:#{version} message:#{message}"
+    else
+      command = "fastlane release_pod version:#{version}" 
+      execute(command)
+    end
+    
+  end
+end
 
-
-@click.group()
-def cli():
-    pass
-
-
-@click.command()
-# @click.argument('name')
-def init():
-    """初始化 quickpod
-    1.判断是否存在fastlane目录，如果没有则创建
-    2.下载模版文件到指定目录
-    3.更新模版文件
-    """
-    dirname = os.path.join(os.getcwd(), 'fastlane')
-
-    print dirname
-    if not os.path.exists(dirname):
-        click.echo("Can not find directory '%s' , create" % dirname)
-        os.mkdir(dirname)
-        click.echo("Create directory '%s'" % dirname)
-    else:
-        click.echo("Directory '%s' exists" % dirname)
-
-    fastlaneFileName = os.path.join(dirname, 'Fastfile')
-    if os.path.isfile(fastlaneFileName):
-        os.remove(fastlaneFileName)
-
-    target_url = 'https://raw.githubusercontent.com/ripperhe/fastlane-files/master/fastlane/Fastfile'
-    download_file(target_url, fastlaneFileName)
-
-
-@click.command()
-@click.argument('version')
-@click.argument('message', required=False)
-def update(version, message):
-    """更新 pod spec 版本"""
-
-    excute_command("pod lib create test")
-    return
-
-    command = ''
-    if message:
-        command = 'fastlane release_pod version:"%s" message: %s' % (
-            version, message)
-    else:
-        command = 'fastlane release_pod version:"%s"' % version
-    excute_command(command)
-
-
-cli.add_command(init)
-cli.add_command(update)
-
-if __name__ == "__main__":
-    cli()

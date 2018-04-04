@@ -1,0 +1,23 @@
+#!/bin/sh
+
+echo "Install dependency"
+bundle install
+
+if [ ! -d ~/.quickpod ]; then
+mkdir ~/.quickpod
+fi
+
+if [ -f "~/.quickpod/quickpod" ]; then 
+  rm "$~/.quickpod/quickpod"
+fi 
+
+cp ./quickpod ~/.quickpod/quickpod
+
+if alias quickpod 2>/dev/null; then 
+  echo "Add a alias"
+  echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.zshrc
+  source ~/.zshrc
+fi
+
+
+
