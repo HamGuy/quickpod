@@ -29,8 +29,8 @@ command :init do |c|
     puts filename
     FileUtils.rm(filename) unless !File.exist?(filename)
 
-    tmppath = "/tmp/relesepod_fastlane_templete"
-    execute "git clone git@gitlab.dxy.net:aspirin/relesepod_fastlane_templete.git #{tmppath}"
+    tmppath = "/tmp/releasepod_fastlane_templete"
+    execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
     execute "cp #{tmppath}/Fastfile #{filename}"
     execute "rm -rf #{tmppath}"
   end

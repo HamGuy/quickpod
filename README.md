@@ -16,7 +16,7 @@ quickpod
 ```
 
 ## Usage
-初始化，切换到目标 pod 根目录，执行初始化命令。该命令会从预定 repo 拉取 fastlane  模版到当前 pod 下。
+初始化，切换到目标 pod 根目录，执行初始化命令。该命令会从预定 repo 拉取 fastlane 模版到当前 pod 下，后续操作将根据此模版进行。
 
 ```
 quickpod init
@@ -26,7 +26,7 @@ quickpod init
 更新 pod 到指定版本
 
 ```
-qucikpod update target_vrsion commit_message
+qucikpod update #target_vrsion #commit_message
 ```
 
 参数说明：
