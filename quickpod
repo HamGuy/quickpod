@@ -23,15 +23,15 @@ command :init do |c|
   c.action do |args, options|
     # Do something or c.when_called Hamguy::Commands::Init
     dirname = File.join(Dir.pwd,'fastlane')
-    FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
+    # FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-    filename = File.join(dirname, 'Fastfile')
-    puts filename
-    FileUtils.rm(filename) unless !File.exist?(filename)
+    # filename = File.join(dirname, 'Fastfile')
+    # puts filename
+    # FileUtils.rm(filename) unless !File.exist?(filename)
 
     tmppath = "/tmp/releasepod_fastlane_templete"
     execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
-    execute "cp #{tmppath}/Fastfile #{filename}"
+    execute "mv -f #{tmppath} #{dirname}"
     execute "rm -rf #{tmppath}"
   end
 end

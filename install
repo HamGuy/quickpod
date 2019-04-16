@@ -10,12 +10,20 @@ fi
 echo "Install quickpod"
 if [ -f "~/.quickpod/quickpod" ]; then 
   rm "$~/.quickpod/quickpod"
+  unalias quickpod
 fi 
 
 cp ./quickpod ~/.quickpod/quickpod
-
 echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.bash_profile
-source ~/.bash_profile
+
+if [ -n"`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
+ # assume Zsh
+   echo 'You are using zsh!'
+   source ~/.zshrc
+elif [ -n"`$SHELL -c 'echo $BASH_VERSION'`" ]; then
+ # assume Bash
+  source ~/.bash_profile
+fi
 
 echo "Success Installed quickpod"
 
