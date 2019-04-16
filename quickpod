@@ -33,6 +33,8 @@ command :init do |c|
     execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
     execute "mv -f #{tmppath}/fastlane #{dirname}"
     execute "rm -rf #{tmppath}"
+    execute ("echo Init fastlane configuration successed!")
+    execute ("echo Please replace thex text od 'ReplaceMe' to the correct specs in the fastlane/Fastfile file!")
   end
 end
 
