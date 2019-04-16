@@ -10,7 +10,7 @@ quickpod
 克隆或下载本项目到本地
 
 ```
- git clone git@gitlab.dxy.net:aspirin/quickpod.git
+ git clone https://github.com/HamGuy/quickpod.git
  cd quickpod
   ./install
 ```
@@ -58,5 +58,4 @@ quickpod --help
 4. [一行命令发布 Pod 框架](https://juejin.im/entry/58df270f61ff4b006b1227c9)
 
   
-
 
