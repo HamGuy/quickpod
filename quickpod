@@ -31,7 +31,7 @@ command :init do |c|
 
     tmppath = "/tmp/releasepod_fastlane_templete"
     execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
-    execute "mv -f #{tmppath} #{dirname}"
+    execute "mv -f #{tmppath}/fastlane #{dirname}"
     execute "rm -rf #{tmppath}"
   end
 end
