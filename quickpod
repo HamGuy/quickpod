@@ -25,16 +25,25 @@ command :init do |c|
     dirname = File.join(Dir.pwd,'fastlane')
     # FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-    # filename = File.join(dirname, 'Fastfile')
+    filename = File.join(dirname, 'Fastfile')
     # puts filename
     # FileUtils.rm(filename) unless !File.exist?(filename)
-
     tmppath = "/tmp/releasepod_fastlane_templete"
+    execute ("echo Starting Download Fastlane Template.")
     execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
+    execute ("echo Download Fastlane Template Successed!")
     execute "mv -f #{tmppath}/fastlane #{dirname}"
     execute "rm -rf #{tmppath}"
+
+    specs = Dir.entries(Dir.home+'/.cocoapods/repos').select{ |item| !item.start_with?('.') }
+    spec_name = choose('Please choose the target repo specs?', *specs)
+    target_git_repo = ask('Please input the specs git repo address below:')
+    outdata = File.read(filename)
+    outdata = outdata.gsub('targetSpec', spec_name).gsub('targetRepoGit',target_git_repo)
+    File.open(filename, 'w') do |f|
+      f.write(outdata)
+    end  
     execute ("echo Init fastlane configuration successed!")
-    execute ("echo Please replace thex text od 'ReplaceMe' to the correct specs in the fastlane/Fastfile file!")
   end
 end
 
