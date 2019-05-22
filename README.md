@@ -21,6 +21,29 @@ quickpod
 ```
 quickpod init
 ```
+然后控制台将输出以下信息：
+```
+Starting Download Fastlane Template.
+Cloning into '/tmp/releasepod_fastlane_templete'...
+remote: Enumerating objects: 19, done.
+remote: Counting objects: 100% (19/19), done.
+remote: Compressing objects: 100% (14/14), done.
+remote: Total 19 (delta 3), reused 3 (delta 0), pack-reused 0
+Unpacking objects: 100% (19/19), done.
+Download Fastlane Template Successed!
+Please choose the target repo specs?
+```
+选择私有 Pod Spec 仓库名，然后输入当前选择的 spec 仓库地址:
+
+ ```
+ Please input the specs git repo address below:
+ ```
+
+当看到下面这段信息时，说明已经初始化成功。
+
+```
+Init fastlane configuration successed!
+```
 
 
 更新 pod 到指定版本
@@ -45,7 +68,8 @@ quickpod --help
 ```
 
 ## History
-
+### 0.0.2
+  * 简化初始化工作
 ### 0.0.1
   * 初始化 fastlane 环境
   * 更新 pod 至指定版本
