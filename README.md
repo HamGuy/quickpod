@@ -7,6 +7,13 @@ quickpod
 
 ## Installation
 
+通过 gem 安装：
+```
+gem install cocoapods 
+```
+
+
+手动安装：
 克隆或下载本项目到本地
 
 ```
