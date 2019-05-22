@@ -13,7 +13,7 @@ if [ -f "~/.quickpod/quickpod" ]; then
   unalias quickpod
 fi 
 
-cp ./quickpod ~/.quickpod/quickpod
+cp ./lib/quickpod ~/.quickpod/quickpod
 echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.bash_profile
 
 if [ -n"`$SHELL -c 'echo $ZSH_VERSION'`" ]; then

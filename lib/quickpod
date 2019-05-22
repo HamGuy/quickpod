@@ -6,7 +6,7 @@ require 'fileutils'
 require 'cocoapods'
 
 program :name, 'quickpod'
-program :version, '0.0.2'
+program :version, '0.0.3'
 program :description, 'release pod quickly'
 
 def execute(command, options = {})
