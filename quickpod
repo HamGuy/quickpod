@@ -6,7 +6,7 @@ require 'fileutils'
 require 'cocoapods'
 
 program :name, 'quickpod'
-program :version, '0.0.1'
+program :version, '0.0.2'
 program :description, 'release pod quickly'
 
 def execute(command, options = {})
@@ -17,7 +17,7 @@ end
 command :init do |c|
   c.syntax = 'quickpod init [options]'
   c.summary = ''
-  c.description = '初始化fastlane环境'
+  c.description = 'initlize the fastlane environment'
   c.example 'description', 'command example'
   c.option '--some-switch', 'Some switch that does something'
   c.action do |args, options|
