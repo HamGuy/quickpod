@@ -8,7 +8,7 @@ NC='\033[0m'
 echo "Check dependency"
 # check dependency
 res="$(gem list '^commander$' -i)"
-if [ ${res} = 'true' ];
+if [ ${res} = 'false' ];
 then
   echo "${YEL}The dependency gem ${RED} commander ${YEL} not installed, try to install it:${NC}"
   gem install commander
@@ -20,25 +20,26 @@ then
 fi
 
 
-target_path = "/usr/local/bin/quickpod"
+target_path="/usr/local/bin/quickpod"
 echo "Install quickpod"
 if [ -e ${target_path} ]
 then
-  # echo 'delete old one'
-  sudo rm /usr/local/bin/quickpod
+ echo 'delete old one'
+  sudo rm ${target_path}
 fi 
 
-sudo cp ./lib/quickpod /usr/local/bin/quickpod
+sudo cp ./lib/quickpod ${target_path}
 
-if [ -n"`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
- # assume Zsh
-   echo 'You are using zsh!'
-   source ~/.zshrc
-elif [ -n"`$SHELL -c 'echo $BASH_VERSION'`" ]; then
- # assume Bash
-  source ~/.bash_profile
-fi
+# if [ -n"`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
+#  # assume Zsh
+#    echo 'You are using zsh!'
+#    hash -r
+# elif [ -n"`$SHELL -c 'echo $BASH_VERSION'`" ]; then
+# # assume Bash
+#   hash -r
+# fi
 
+hash -r
 echo "${GRE}Success Installed quickpod!"
 
 

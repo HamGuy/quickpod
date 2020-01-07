@@ -6,7 +6,7 @@ require 'fileutils'
 require 'cocoapods'
 
 program :name, 'quickpod'
-program :version, '0.0.3'
+program :version, '0.0.4'
 program :description, 'release pod quickly'
 
 def execute(command, options = {})
@@ -14,12 +14,26 @@ def execute(command, options = {})
     abort unless (system(command) || options[:optional])
 end
 
+command :new do |c|
+  c.syntax = 'quickpod new '
+  c.summary = ''
+  c.description = 'Create new pod'
+  c.example 'description', 'quickpod new <pod_name>'
+  c.action do |args, options|
+    pod_name = args[0]
+    if pod_name
+      execute "pod lib create #{pod_name}"
+    else
+      puts "pod name can not be empty"
+    end
+  end
+end
+
 command :init do |c|
-  c.syntax = 'quickpod init [options]'
+  c.syntax = 'quickpod init'
   c.summary = ''
   c.description = 'initlize the fastlane environment'
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.example 'description', 'do not need any args'
   c.action do |args, options|
     # Do something or c.when_called Hamguy::Commands::Init
     dirname = File.join(Dir.pwd,'fastlane')
@@ -29,9 +43,9 @@ command :init do |c|
     # puts filename
     # FileUtils.rm(filename) unless !File.exist?(filename)
     tmppath = "/tmp/releasepod_fastlane_templete"
-    execute ("echo Starting Download Fastlane Template.")
+    puts "Starting Download Fastlane Template"
     execute "git clone https://github.com/HamGuy/releasepod_fastlane_templete.git #{tmppath}"
-    execute ("echo Download Fastlane Template Successed!")
+    puts "Download Fastlane Template Successed!"
     execute "mv -f #{tmppath}/fastlane #{dirname}"
     execute "rm -rf #{tmppath}"
 
@@ -43,7 +57,7 @@ command :init do |c|
     File.open(filename, 'w') do |f|
       f.write(outdata)
     end  
-    execute ("echo Init fastlane configuration successed!")
+    puts "Init fastlane configuration successed!"
   end
 end
 
@@ -51,8 +65,7 @@ command :update do |c|
   c.syntax = 'quickpod update [options]'
   c.summary = ''
   c.description = 'Update pod to target version'
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
+  c.example 'description', 'pod update 1.0.1 "new pod release"'
   c.action do |args, options|
     # Do something or c.when_called quickpod::Commands::Update
     version = args[0]
