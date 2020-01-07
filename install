@@ -1,20 +1,34 @@
 #!/bin/sh
 
-echo "Install dependency"
-bundle install
+RED='\033[0;31m'
+GRE='\033[32m' # No Color
+YEL='\033[33m'
+NC='\033[0m'
 
-if [ ! -d ~/.quickpod ]; then
-mkdir ~/.quickpod
+echo "Check dependency"
+# check dependency
+res="$(gem list '^commander$' -i)"
+if [ ${res} = 'true' ];
+then
+  echo "${YEL}The dependency gem ${RED} commander ${YEL} not installed, try to install it:${NC}"
+  gem install commander
+  if [ $? -eq 1 ];
+  then
+  echo "${YEL}Permission Denied, try to insttall ${RED}sudo${NC}"
+    sudo gem install commander
+  fi
 fi
 
+
+target_path = "/usr/local/bin/quickpod"
 echo "Install quickpod"
-if [ -f "~/.quickpod/quickpod" ]; then 
-  rm "$~/.quickpod/quickpod"
-  unalias quickpod
+if [ -e ${target_path} ]
+then
+  # echo 'delete old one'
+  sudo rm /usr/local/bin/quickpod
 fi 
 
-cp ./lib/quickpod ~/.quickpod/quickpod
-echo "alias quickpod='~/.quickpod/quickpod'" >> ~/.bash_profile
+sudo cp ./lib/quickpod /usr/local/bin/quickpod
 
 if [ -n"`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
  # assume Zsh
@@ -25,14 +39,6 @@ elif [ -n"`$SHELL -c 'echo $BASH_VERSION'`" ]; then
   source ~/.bash_profile
 fi
 
-echo "Success Installed quickpod"
-
-# Todo check 
-# if alias quickpod 2>/dev/null; then 
-#   echo "installed"
-# else
-#   echo "Add a alias"
-# fi
-
+echo "${GRE}Success Installed quickpod!"
 
 
