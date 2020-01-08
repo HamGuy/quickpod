@@ -68,6 +68,19 @@ qucikpod update #target_vrsion #commit_message
 
 暂不提供 `pod repo push` 命令的 --sources 参数，如有需要，直接在 `fastlane/Fastfile` 文件中修改。
 
+⚠️ 如果在 `pod repo lint` 或者 `pod repo push` 过程中，遇到使用依赖的包包含二进制包而引发的错误，需要修改 `fastlane/fastfile` 文件：
+
+1. 修复 `the 'Pods-App' target has transitive dependencies that include statically linked binaries` 错误，添加 `use_libraries` 选项:
+```
+pod_lib_lint(allow_warnings: true, sources: target_sources, use_libraries: true)
+```
+2. 修复 `ld: symbol(s) not found for architecture i386`， 参考 [github issue](https://github.com/CocoaPods/CocoaPods/issues/5854#issuecomment-554912072) 添加 `skip_import_validation` 选项
+```
+pod_lib_lint(allow_warnings: true, sources: target_sources, use_libraries: true,skip_import_validation:true)
+```
+
+3. 遇到错误，排查问题，可以添加 `verbose` 选项。
+
 查看帮助
 
 ```
